@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<PokemonList
+  classes={
+    Object {
+      "pokemonCard": "PokemonList-pokemonCard-2",
+      "root": "PokemonList-root-1",
+    }
+  }
+  pokemonList={
+    Array [
+      Object {
+        "description": "Pokemon au teint jaune",
+        "id": 0,
+        "name": "Pikachu",
+        "type": "Foudre",
+      },
+      Object {
+        "description": "Pokemon au teint vert",
+        "id": 1,
+        "name": "Bulbizard",
+        "type": "Plante",
+      },
+      Object {
+        "description": "Pokemon au teint rouge",
+        "id": 2,
+        "name": "Salameche",
+        "type": "Feu",
+      },
+    ]
+  }
+/>
+`;

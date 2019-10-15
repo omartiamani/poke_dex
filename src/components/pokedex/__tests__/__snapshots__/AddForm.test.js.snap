@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<inject-with-rootStore(AddForm)
+  classes={
+    Object {
+      "addButton": "inject-with-rootStore(AddForm)-addButton-4",
+      "descriptionTextField": "inject-with-rootStore(AddForm)-descriptionTextField-3",
+      "nameTextField": "inject-with-rootStore(AddForm)-nameTextField-1",
+      "typeTextField": "inject-with-rootStore(AddForm)-typeTextField-2",
+    }
+  }
+/>
+`;

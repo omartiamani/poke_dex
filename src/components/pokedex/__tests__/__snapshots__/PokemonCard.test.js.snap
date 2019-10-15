@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<inject-with-rootStore(PokemonCard)
+  classes={
+    Object {
+      "card": "inject-with-rootStore(PokemonCard)-card-1",
+      "iconDiv": "inject-with-rootStore(PokemonCard)-iconDiv-4",
+      "media": "inject-with-rootStore(PokemonCard)-media-2",
+      "waterIcon": "inject-with-rootStore(PokemonCard)-waterIcon-3",
+    }
+  }
+/>
+`;
