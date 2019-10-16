@@ -82,7 +82,6 @@ class AddForm extends Component {
       description: this.descriptionTextFieldValue
     };
     this.props.rootStore.pokedexStore.addPokemon(newPokemon);
-    console.log(this.props.rootStore.pokedexStore.pokemonList);
   };
 
   render() {

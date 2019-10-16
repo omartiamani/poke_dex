@@ -1,4 +1,6 @@
 import { observable, action, computed } from "mobx";
+import { savePokemon, loadPokemons, removePokemon } from "../../api/pokedexAPI";
+import { DELETE_SUCCESS_MSG } from "../../constants";
 
 // A list of error message
 const ID_PARAM_ERR = "Parameter id must be an non null integer";
@@ -7,32 +9,23 @@ const TYPE_PARAM_ERR = "Parameter type must be a non null string";
 
 /**
  * The pokedex store. This class stores the data related to the pokemons.
- * Attributes: rootStore, pokemonList, currentPokemon, searchValue
+ * Attributes:
+ * rootStore: The root store
+ * pokemonList: The list of all loaded pokemons
+ * currentPokemon: The current selected pokemon
+ * searchValue: The searched value in the search bar
+ * isLoading: True if data are loading from database
+ * saveSuccess: True if the database request has succeeded
+ * reqError: The errorMessage if saveSuccess is false
  */
 export class PokedexStore {
   rootStore = null;
-  @observable pokemonList = [
-    {
-      id: 0,
-      name: "Pikachu",
-      type: "Foudre",
-      description: "Pokemon au teint jaune"
-    },
-    {
-      id: 1,
-      name: "Bulbizard",
-      type: "Plante",
-      description: "Pokemon au teint vert"
-    },
-    {
-      id: 2,
-      name: "Salameche",
-      type: "Feu",
-      description: "Pokemon au teint rouge"
-    }
-  ];
+  @observable pokemonList = [];
   @observable currentPokemon = null;
   @observable searchValue = "";
+  @observable isLoading = false;
+  @observable saveSuccess = null;
+  @observable reqError = null;
 
   /**
    * Filter the pokemonList given the searchValue
@@ -55,6 +48,18 @@ export class PokedexStore {
    */
   constructor(rootStore) {
     this.rootStore = rootStore;
+
+    this.isLoading = true;
+    loadPokemons()
+      .then(pokemons => {
+        this.setPokemonList(pokemons);
+        this.isLoading = false;
+        this.reqError = null;
+      })
+      .catch(err => {
+        this.isLoading = false;
+        this.reqError = err;
+      });
   }
 
   /**
@@ -82,7 +87,19 @@ export class PokedexStore {
    * Add a new pokemon to the list
    */
   @action addPokemon(pokemon) {
-    return pokemon ? this.pokemonList.push(pokemon) : -1;
+    if (pokemon) {
+      savePokemon(pokemon)
+        .then(res => {
+          this.pokemonList.push(pokemon);
+
+          this.saveSuccess = DELETE_SUCCESS_MSG;
+          this.reqError = null;
+        })
+        .catch(err => {
+          this.saveSuccess = null;
+          this.reqError = err;
+        });
+    }
   }
 
   /**
@@ -91,8 +108,18 @@ export class PokedexStore {
    * Remove a pokemon from the list
    */
   @action removePokemon(id) {
-    if (id)
-      this.pokemonList = this.pokemonList.filter(pokemon => pokemon.id !== id);
+    if (id) {
+      removePokemon(id)
+        .then(res => {
+          this.pokemonList = this.pokemonList.filter(
+            pokemon => pokemon.id !== id
+          );
+          this.reqError = null;
+        })
+        .catch(err => {
+          this.reqError = err;
+        });
+    }
   }
 
   /**

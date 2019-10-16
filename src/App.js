@@ -7,17 +7,42 @@ import Typography from "@material-ui/core/Typography";
 import SearchIcon from "@material-ui/icons/Search";
 import InputBase from "@material-ui/core/InputBase";
 import Avatar from "@material-ui/core/Avatar";
+import Snackbar from "@material-ui/core/Snackbar";
+import SnackbarContent from "@material-ui/core/SnackbarContent";
+import { green } from "@material-ui/core/colors";
+import CloseIcon from "@material-ui/icons/Close";
+import IconButton from "@material-ui/core/IconButton";
+import CheckCircleIcon from "@material-ui/icons/CheckCircle";
+import ErrorIcon from "@material-ui/icons/Error";
 
 import rootStore from "./store/RootStore";
 import PokemonList from "./components/pokedex/PokemonList";
 import AddForm from "./components/pokedex/AddForm";
 import { POKEBALL_ICON_URL } from "./api/urlConstants";
+import { SAVE_SUCCESS_MSG } from "./constants";
 
 //Style object that keeps styling related to the component in the same page
 //This styling has been copied from Material-ui site
 const styles = theme => ({
   root: {
     flexGrow: 1
+  },
+  success: {
+    backgroundColor: green[600]
+  },
+  error: {
+    backgroundColor: theme.palette.error.dark
+  },
+  icon: {
+    fontSize: 20
+  },
+  iconVariant: {
+    opacity: 0.9,
+    marginRight: theme.spacing(1)
+  },
+  message: {
+    display: "flex",
+    alignItems: "center"
   },
   avatar: {
     margin: 10
@@ -69,6 +94,40 @@ const styles = theme => ({
   }
 });
 
+function MySnackbarContentWrapper(props) {
+  const { classes, message, onClose, variant, ...other } = props;
+
+  const variantIcon = {
+    success: CheckCircleIcon,
+    error: ErrorIcon
+  };
+
+  const Icon = variantIcon[variant];
+
+  return (
+    <SnackbarContent
+      className={[classes[variant], classes]}
+      aria-describedby="client-snackbar"
+      message={
+        <span id="client-snackbar" className={classes.message}>
+          <Icon className={[classes.icon, classes.iconVariant]} />
+          {message}
+        </span>
+      }
+      action={[
+        <IconButton
+          key="close"
+          aria-label="close"
+          color="inherit"
+          onClick={onClose}>
+          <CloseIcon className={classes.icon} />
+        </IconButton>
+      ]}
+      {...other}
+    />
+  );
+}
+
 /**
  * The App component class.
  * This is the root React component
@@ -83,11 +142,41 @@ class App extends Component {
     rootStore.pokedexStore.searchValue = event.target.value;
   }
 
+  /**
+   * Handle the snackbar close event
+   */
+  handleSnackbarClose() {
+    rootStore.pokedexStore.saveSuccess = null;
+    rootStore.pokedexStore.reqError = null;
+  }
+
   render() {
     const { classes } = this.props;
-    const { filterPokemonList, searchValue } = rootStore.pokedexStore;
+    const {
+      filterPokemonList,
+      searchValue,
+      isLoading,
+      saveSuccess,
+      reqError
+    } = rootStore.pokedexStore;
+
     return (
       <Provider rootStore={rootStore}>
+        <Snackbar
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "left"
+          }}
+          open={saveSuccess}
+          onClose={this.handleSnackbarClose}
+          autoHideDuration={6000}>
+          <MySnackbarContentWrapper
+            onClose={this.handleSnackbarClose}
+            classes={classes}
+            variant={saveSuccess ? "success" : "error"}
+            message={saveSuccess ? SAVE_SUCCESS_MSG : reqError}
+          />
+        </Snackbar>
         <AppBar position="sticky">
           <Toolbar>
             <Avatar
@@ -117,7 +206,7 @@ class App extends Component {
         </AppBar>
         <div className={classes.appBody}>
           <AddForm className={classes.addForm} />
-          <PokemonList pokemonList={filterPokemonList} />
+          <PokemonList pokemonList={filterPokemonList} isLoading={isLoading} />
         </div>
       </Provider>
     );

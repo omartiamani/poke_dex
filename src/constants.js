@@ -5,3 +5,6 @@ export const POKEMON_TYPES = {
   electric: "foudre",
   grass: "plante"
 };
+
+export const SAVE_SUCCESS_MSG = "Pokemon créé avec succès";
+export const DELETE_SUCCESS_MSG = "Pokemon supprimé avec succès";
