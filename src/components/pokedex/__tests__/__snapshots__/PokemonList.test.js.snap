@@ -4,7 +4,9 @@ exports[`renders correctly 1`] = `
 <PokemonList
   classes={
     Object {
+      "noPokemonFound": "PokemonList-noPokemonFound-4",
       "pokemonCard": "PokemonList-pokemonCard-2",
+      "progress": "PokemonList-progress-3",
       "root": "PokemonList-root-1",
     }
   }

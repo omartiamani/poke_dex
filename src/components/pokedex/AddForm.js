@@ -82,6 +82,9 @@ class AddForm extends Component {
       description: this.descriptionTextFieldValue
     };
     this.props.rootStore.pokedexStore.addPokemon(newPokemon);
+    this.nameTextFieldValue = "";
+    this.typeTextFieldValue = "";
+    this.descriptionTextFieldValue = "";
   };
 
   render() {
