@@ -1,12 +1,14 @@
 import firebase from "firebase";
+
 // Required for side-effects
 require("firebase/firestore");
 
 // Initialize Firebase
 var firebaseConfig = {
-  apiKey: "AIzaSyD0IwsPc4WrZSnTfiwrNURq74wDK6wN3Gc",
-  authDomain: "poke-app-256118.firebaseapp.com",
-  projectId: "poke-app-256118"
+  //Bad practice: we should use an environment variable
+  apiKey: process.env.REACT_APP_METEORITE_STRIKE_DATASET.FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_METEORITE_STRIKE_DATASET.AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_METEORITE_STRIKE_DATASET.PROJECT_ID
 };
 firebase.initializeApp(firebaseConfig);
 
