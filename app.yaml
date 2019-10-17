@@ -1,0 +1,28 @@
+runtime: python27
+api_version: 1
+threadsafe: true
+
+handlers:
+  - url: /
+    static_files: build/index.html
+    upload: build/index.html
+
+  - url: /(.*)
+    static_files: build/\1
+    upload: build/(.*)
+skip_files:
+  - src/
+  - node_modules/
+  - config-overrides.js
+  - yarn.*
+  - ^\.git/.*
+  - ^(.*/)?#.*#$
+  - ^(.*/)?.*~$
+  - ^(.*/)?.*\.py[co]$
+  - ^(.*/)?.*/RCS/.*$
+  - ^(.*/)?\..*$
+  - ^(.*/)?.*\.bak$
+env_variables:
+  FIREBASE_API_KEY: "AIzaSyD0IwsPc4WrZSnTfiwrNURq74wDK6wN3Gc"
+  PROJECT_ID: "poke-app-256118"
+  AUTH_DOMAIN: "poke-app-256118.firebaseapp.com"
